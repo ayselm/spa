@@ -1,17 +1,23 @@
 <?php
 require_once 'db_connect.php';
+require_once 'lib.php';
+require 'parts/head.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    dfhfhfg fghjfgjhfjg
 
+    <?php
+    if (!empty($_POST)) {
+        $pass= md5($_POST["password"]);
+        if (checkPassword($db, $_POST["login"], $pass)){ 
+            echo "pass ok!";
+            setcookie('login', $_POST["login"], 0, '/');
+           //header('Location: main.php');
+            
+        }
+        else {
+           echo "pass owroing";
+        }
+    }
+    ?> 
     <header>
         <p>Вы здесь в первый раз? <a href="registration.php">Создайте учетную запись</a></p>
     </header>
@@ -32,27 +38,11 @@ require_once 'db_connect.php';
              <input type="submit" value="вход">
         </form>
 
-        <?php
-    echo 'php ura!!!! <br><br>';
-    if (!empty($_POST)) {
-        //var_dump($_POST);
-        $log = $_POST["login"];
-        $query ="SELECT pass FROM users WHERE login='$log'";
-        $result = mysqli_query($db, $query);
-        $res = mysqli_fetch_assoc($result);
-        var_dump($res);
-        var_dump($_POST);
-        if ($res !== $_POST["password"]){ 
-            echo "pass owroing";
-        }
-        else {
-            echo "pass ok!";
-        }
-        }
-    ?>
+
         
 
 
     </section>
-</body>
-</html>
+<?php
+require 'parts/end.php';
+?>
